@@ -14,5 +14,10 @@ public class RoomOneControllerScript : BlockRoomControllerScriptBase
 
 		Cubes.Add(redCube);
 	}
+
+	public override bool AdvancedCheck()
+	{
+		return true;
+	}
 }
 

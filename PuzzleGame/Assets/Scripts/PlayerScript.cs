@@ -16,8 +16,10 @@ public class PlayerScript : MonoBehaviour {
 	{
 		var hitObject = CastMainCameraRay();
 
-		if(hitObject != null)
+		if (hitObject != null)
+		{
 			Debug.Log("Looking At: " + hitObject.transform.name);
+		}
 
 		if (Input.GetKeyDown(KeyCode.E))
 		{

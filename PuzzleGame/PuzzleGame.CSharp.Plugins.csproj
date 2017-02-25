@@ -120,10 +120,7 @@
     <Compile Include="Assets\Standard Assets\Utility\WaypointProgressTracker.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\Shaders\JessesTestOutlineShader.shader" />
-    <None Include="Assets\Shaders\JustOUtline.shader" />
-    <None Include="Assets\Shaders\NewShader.shader" />
-    <None Include="Assets\Shaders\OutlinedSilhouettedDiffuse.shader" />
+    <None Include="Assets\Resources\Shaders\VertexLit.shader" />
     <None Include="Assets\Standard Assets\Characters\FirstPersonCharacter\FirstPersonCharacterGuidelines.txt" />
     <None Include="Assets\Standard Assets\Characters\RollerBall\RollerBallGuidelines.txt" />
     <None Include="Assets\Standard Assets\Characters\ThirdPersonCharacter\ThirdPersonCharacterGuidelines.txt" />

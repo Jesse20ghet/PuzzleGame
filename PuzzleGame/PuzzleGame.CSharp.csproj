@@ -84,13 +84,16 @@
     <Compile Include="Assets\Classes\Container\CubeContainer.cs" />
     <Compile Include="Assets\Classes\Enumerations.cs" />
     <Compile Include="Assets\Classes\InventoryItems\Interface\IInventoryItem.cs" />
-    <Compile Include="Assets\Scripts\ActivatableScript.cs" />
     <Compile Include="Assets\Scripts\ActivateScripts\ActivatableClockScript.cs" />
     <Compile Include="Assets\Scripts\ActivateScripts\CircleKeyScript.cs" />
     <Compile Include="Assets\Scripts\ActivateScripts\SquareKeyScript.cs" />
     <Compile Include="Assets\Scripts\ApplyForceActivatableScript.cs" />
+    <Compile Include="Assets\Scripts\BasicBlockActivatableScript.cs" />
+    <Compile Include="Assets\Scripts\BlockCountScript.cs" />
+    <Compile Include="Assets\Scripts\BlockScripts\BasicBlockSelectedScript.cs" />
     <Compile Include="Assets\Scripts\BlockScripts\BlockRoomControllerScriptBase.cs" />
     <Compile Include="Assets\Scripts\BlockScripts\PlaneScript.cs" />
+    <Compile Include="Assets\Scripts\BlockScripts\TrailCubeScript.cs" />
     <Compile Include="Assets\Scripts\ClockScripts\ClockTickScript.cs" />
     <Compile Include="Assets\Scripts\GameControllerScript.cs" />
     <Compile Include="Assets\Scripts\LightFlashScript.cs" />
@@ -122,16 +125,14 @@
     <Compile Include="Assets\Scripts\RoomControllerScripts\RoomSixControllerScript.cs" />
     <Compile Include="Assets\Scripts\RoomControllerScripts\RoomThreeControllerScript.cs" />
     <Compile Include="Assets\Scripts\RoomControllerScripts\RoomTwoControllerScript.cs" />
+    <Compile Include="Assets\Scripts\RoomUIUpdateScript.cs" />
     <Compile Include="Assets\Scripts\RotateScript.cs" />
     <Compile Include="Assets\Scripts\ShakeScript.cs" />
     <Compile Include="Assets\Scripts\TrashCanTiltOverScript.cs" />
     <Compile Include="Assets\rig.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\Shaders\JessesTestOutlineShader.shader" />
-    <None Include="Assets\Shaders\JustOUtline.shader" />
-    <None Include="Assets\Shaders\NewShader.shader" />
-    <None Include="Assets\Shaders\OutlinedSilhouettedDiffuse.shader" />
+    <None Include="Assets\Resources\Shaders\VertexLit.shader" />
     <None Include="Assets\Standard Assets\Characters\FirstPersonCharacter\FirstPersonCharacterGuidelines.txt" />
     <None Include="Assets\Standard Assets\Characters\RollerBall\RollerBallGuidelines.txt" />
     <None Include="Assets\Standard Assets\Characters\ThirdPersonCharacter\ThirdPersonCharacterGuidelines.txt" />

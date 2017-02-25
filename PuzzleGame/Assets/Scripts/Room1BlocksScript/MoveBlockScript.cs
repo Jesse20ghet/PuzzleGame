@@ -4,6 +4,10 @@ using System.Collections.Generic;
 
 public class MoveBlockScript : MonoBehaviour {
 
+	public List<GameObject> createdTrailCubes = new List<GameObject>();
+	public GameObject controller;
+	public static int CurrentCubes = 1;
+
 	float movementLength;
 	float movementCheckLength;
 	float movementSpeed = 2f;
@@ -11,7 +15,6 @@ public class MoveBlockScript : MonoBehaviour {
 	bool isMoving;
 	Vector3 startingPosition;
 	GameObject trailCube;
-	List<GameObject> createdTrailCubes = new List<GameObject>();
 
 	bool spawnCube;
 	Vector3 oldPosition;
@@ -51,13 +54,14 @@ public class MoveBlockScript : MonoBehaviour {
 			{
 				var x = (GameObject)GameObject.Instantiate(trailCube, oldPosition, transform.rotation);
 				x.name = transform.name + "TrailBox";
+				x.transform.parent = transform.parent.transform;
 				
 				createdTrailCubes.Add(x);
+				controller.SendMessage("UpdateUI", 1);
 				spawnCube = false;
 			}
 
 			isMoving = false;
-			return;
 		}
 		else 
 		{
@@ -105,6 +109,7 @@ public class MoveBlockScript : MonoBehaviour {
 		{
 			createdTrailCubes.RemoveAt(createdTrailCubes.Count - 1);
 			Destroy(rayCastHit.transform.gameObject);
+			controller.SendMessage("UpdateUI", -1);
 			oldPosition = transform.position;
 			vectorToMoveTowards = transform.position + movementVector;
 		}
