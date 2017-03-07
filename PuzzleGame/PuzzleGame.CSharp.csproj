@@ -95,6 +95,7 @@
     <Compile Include="Assets\Scripts\BlockScripts\PlaneScript.cs" />
     <Compile Include="Assets\Scripts\BlockScripts\TrailCubeScript.cs" />
     <Compile Include="Assets\Scripts\ClockScripts\ClockTickScript.cs" />
+    <Compile Include="Assets\Scripts\DebugScript.cs" />
     <Compile Include="Assets\Scripts\GameControllerScript.cs" />
     <Compile Include="Assets\Scripts\LightFlashScript.cs" />
     <Compile Include="Assets\Scripts\LookAtScript.cs" />
