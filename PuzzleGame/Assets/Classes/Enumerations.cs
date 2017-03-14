@@ -13,7 +13,9 @@ namespace Assets.Classes
 			Blue,
 			Red,
 			Cyan,
-			Orange
+			Orange,
+			Pink,
+			Yellow
 		}
 	}
 }

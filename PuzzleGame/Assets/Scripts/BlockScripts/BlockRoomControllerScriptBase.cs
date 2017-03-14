@@ -23,11 +23,11 @@ public class BlockRoomControllerScriptBase : MonoBehaviour
 
 	void Awake()
 	{
-		roomNameText = GameObject.Find("RoomNameText").GetComponent<Text>();
-		percentageText = GameObject.Find("PercentText").GetComponent<Text>();
+		//roomNameText = GameObject.Find("RoomNameText").GetComponent<Text>();
+		//percentageText = GameObject.Find("PercentText").GetComponent<Text>();
 
-		successColor = new Color(0, 255, 0);
-		failureColor = new Color(255, 0, 0);
+		//successColor = new Color(0, 255, 0);
+		//failureColor = new Color(255, 0, 0);
 	}
 
 	public void ToggleCube(Enumerations.CubeType cube)
@@ -114,8 +114,10 @@ public class BlockRoomControllerScriptBase : MonoBehaviour
 		return true;
 	}
 
-	private void Win()
+	public virtual void Win()
 	{
 		doorToOpen.AddComponent<OpenDoorScript>();
+
+		Debug.Log("WIN! - " + transform.name);
 	}
 }

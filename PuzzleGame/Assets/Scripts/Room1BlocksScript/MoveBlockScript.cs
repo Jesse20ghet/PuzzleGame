@@ -10,7 +10,7 @@ public class MoveBlockScript : MonoBehaviour {
 
 	float movementLength;
 	float movementCheckLength;
-	float movementSpeed = 2f;
+	float movementSpeed = 4f;
 	Vector3 vectorToMoveTowards;
 	bool isMoving;
 	Vector3 startingPosition;
@@ -43,6 +43,12 @@ public class MoveBlockScript : MonoBehaviour {
 		if (transform.name.Contains("Orange"))
 			trailCube = (GameObject)Resources.Load("OrangeTrailCube");
 
+		if (transform.name.Contains("Yellow"))
+			trailCube = (GameObject)Resources.Load("YellowTrailCube");
+
+		if (transform.name.Contains("Pink"))
+			trailCube = (GameObject)Resources.Load("PinkTrailCube");
+
 	}
 	
 	// Update is called once per frame
@@ -52,13 +58,15 @@ public class MoveBlockScript : MonoBehaviour {
 		{
 			if(spawnCube)
 			{
+				spawnCube = false;
 				var x = (GameObject)GameObject.Instantiate(trailCube, oldPosition, transform.rotation);
 				x.name = transform.name + "TrailBox";
 				x.transform.parent = transform.parent.transform;
-				
+				x.GetComponent<TrailCubeScript>().LookAtParent(this.transform.gameObject);
+
 				createdTrailCubes.Add(x);
-				controller.SendMessage("UpdateUI", 1);
-				spawnCube = false;
+				//if(controller != null)
+				//	controller.SendMessage("UpdateUI", 1);
 			}
 
 			isMoving = false;
@@ -109,7 +117,10 @@ public class MoveBlockScript : MonoBehaviour {
 		{
 			createdTrailCubes.RemoveAt(createdTrailCubes.Count - 1);
 			Destroy(rayCastHit.transform.gameObject);
-			controller.SendMessage("UpdateUI", -1);
+
+			//if(controller != null)
+			//	controller.SendMessage("UpdateUI", -1);
+
 			oldPosition = transform.position;
 			vectorToMoveTowards = transform.position + movementVector;
 		}
