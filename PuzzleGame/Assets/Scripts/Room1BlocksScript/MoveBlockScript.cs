@@ -19,6 +19,10 @@ public class MoveBlockScript : MonoBehaviour {
 	bool spawnCube;
 	Vector3 oldPosition;
 
+	bool resettingToTrailCube = false;
+	bool lastCube = false;
+	GameObject resetTrailCube;
+
 	// Use this for initialization
 	void Start () 
 	{
@@ -54,33 +58,63 @@ public class MoveBlockScript : MonoBehaviour {
 	// Update is called once per frame
 	void Update () 
 	{
-		if (vectorToMoveTowards == transform.position) 
+		if (resettingToTrailCube) // The cube is being reset to an earlier trail cube's position
 		{
-			if(spawnCube)
+			if(vectorToMoveTowards == transform.position)
 			{
-				spawnCube = false;
-				var x = (GameObject)GameObject.Instantiate(trailCube, oldPosition, transform.rotation);
-				x.name = transform.name + "TrailBox";
-				x.transform.parent = transform.parent.transform;
-				x.GetComponent<TrailCubeScript>().LookAtParent(this.transform.gameObject);
+				if (lastCube)
+				{
+					resettingToTrailCube = false;
+					resetTrailCube = null;
+					return;
+				}
 
-				createdTrailCubes.Add(x);
-				//if(controller != null)
-				//	controller.SendMessage("UpdateUI", 1);
+				if (createdTrailCubes[createdTrailCubes.Count - 1] == resetTrailCube)
+					lastCube = true;
+
+				vectorToMoveTowards = createdTrailCubes[createdTrailCubes.Count - 1].transform.position;
+
+				vectorToMoveTowards = createdTrailCubes[createdTrailCubes.Count - 1].transform.position;
+				Destroy(createdTrailCubes[createdTrailCubes.Count - 1]);
+				createdTrailCubes.RemoveAt(createdTrailCubes.Count - 1);
 			}
-
-			isMoving = false;
+			else
+			{
+				transform.position = Vector3.MoveTowards(transform.position, vectorToMoveTowards, movementSpeed * Time.deltaTime);
+			}
 		}
-		else 
+		else
 		{
-			transform.position = Vector3.MoveTowards(transform.position, vectorToMoveTowards, movementSpeed * Time.deltaTime);
-			isMoving = true;
+			if (vectorToMoveTowards == transform.position)
+			{
+				if (spawnCube)
+				{
+					spawnCube = false;
+					var x = (GameObject)GameObject.Instantiate(trailCube, oldPosition, transform.rotation);
+					x.name = transform.name + "TrailBox";
+					x.transform.parent = transform.parent.transform;
+					x.GetComponent<TrailCubeScript>().LookAtParent(this.transform.gameObject);
+					x.AddComponent<BasicBlockActivatableScript>();
+					x.transform.tag = "Activatable";
+
+					createdTrailCubes.Add(x);
+					//if(controller != null)
+					//	controller.SendMessage("UpdateUI", 1);
+				}
+
+				isMoving = false;
+			}
+			else
+			{
+				transform.position = Vector3.MoveTowards(transform.position, vectorToMoveTowards, movementSpeed * Time.deltaTime);
+				isMoving = true;
+			}
 		}
 	}
 
 	void Activate(GameObject player)
 	{
-		if (isMoving)
+		if (isMoving || resettingToTrailCube)
 			return;
 
 		RaycastHit rayCastHit;
@@ -125,6 +159,21 @@ public class MoveBlockScript : MonoBehaviour {
 			vectorToMoveTowards = transform.position + movementVector;
 		}
 
+	}
+
+	public void ResetToTrailCube(GameObject trailCube)
+	{
+		resettingToTrailCube = true;
+		resetTrailCube = trailCube;
+
+		lastCube = false; // Reset last cube flag
+
+		if (trailCube == createdTrailCubes[createdTrailCubes.Count - 1])
+			lastCube = true;
+
+		vectorToMoveTowards = createdTrailCubes[createdTrailCubes.Count - 1].transform.position;
+		Destroy(createdTrailCubes[createdTrailCubes.Count - 1]);
+		createdTrailCubes.RemoveAt(createdTrailCubes.Count - 1);
 	}
 
 	void Respawn()

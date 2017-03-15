@@ -136,6 +136,7 @@
     <Compile Include="Assets\Scripts\RotateScript.cs" />
     <Compile Include="Assets\Scripts\ShakeScript.cs" />
     <Compile Include="Assets\Scripts\SunScript.cs" />
+    <Compile Include="Assets\Scripts\TrailCubeActivatableScript.cs" />
     <Compile Include="Assets\Scripts\TrashCanTiltOverScript.cs" />
     <Compile Include="Assets\rig.cs" />
   </ItemGroup>
