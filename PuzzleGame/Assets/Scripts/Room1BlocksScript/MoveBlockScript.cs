@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using System;
 
 public class MoveBlockScript : MonoBehaviour {
 
@@ -14,7 +16,9 @@ public class MoveBlockScript : MonoBehaviour {
 	Vector3 vectorToMoveTowards;
 	bool isMoving;
 	Vector3 startingPosition;
+
 	GameObject trailCube;
+	GameObject cornerTrailCube;
 
 	bool spawnCube;
 	Vector3 oldPosition;
@@ -32,26 +36,47 @@ public class MoveBlockScript : MonoBehaviour {
 		isMoving = false;
 		startingPosition = transform.position;
 
-		if(transform.name.Contains("Red"))
-			trailCube = (GameObject)Resources.Load("RedTrailCube");
+		if (transform.name.Contains("Red"))
+		{
+			trailCube = (GameObject)Resources.Load("TrailCubes/RedTrailCube");
+			cornerTrailCube = (GameObject)Resources.Load("TrailCubes/RedTrailCornerPiece");
+		}
 
-		if(transform.name.Contains("Green"))
-			trailCube = (GameObject)Resources.Load("GreenTrailCube");
+		if (transform.name.Contains("Green"))
+		{
+			trailCube = (GameObject)Resources.Load("TrailCubes/GreenTrailCube");
+			cornerTrailCube = (GameObject)Resources.Load("TrailCubes/GreenTrailCornerPiece");
+		}
 
 		if (transform.name.Contains("Blue"))
-			trailCube = (GameObject)Resources.Load("BlueTrailCube");
+		{
+			trailCube = (GameObject)Resources.Load("TrailCubes/BlueTrailCube");
+			cornerTrailCube = (GameObject)Resources.Load("TrailCubes/BlueTrailCornerPiece");
+		}
 
 		if (transform.name.Contains("Cyan"))
-			trailCube = (GameObject)Resources.Load("CyanTrailCube");
+		{
+			trailCube = (GameObject)Resources.Load("TrailCubes/CyanTrailCube");
+			cornerTrailCube = (GameObject)Resources.Load("TrailCubes/CyanTrailCornerPiece");
+		}
 
 		if (transform.name.Contains("Orange"))
-			trailCube = (GameObject)Resources.Load("OrangeTrailCube");
+		{
+			trailCube = (GameObject)Resources.Load("TrailCubes/OrangeTrailCube");
+			cornerTrailCube = (GameObject)Resources.Load("TrailCubes/OrangeTrailCornerPiece");
+		}
 
 		if (transform.name.Contains("Yellow"))
-			trailCube = (GameObject)Resources.Load("YellowTrailCube");
+		{
+			trailCube = (GameObject)Resources.Load("TrailCubes/YellowTrailCube");
+			cornerTrailCube = (GameObject)Resources.Load("TrailCubes/YellowTrailCornerPiece");
+		}
 
 		if (transform.name.Contains("Pink"))
-			trailCube = (GameObject)Resources.Load("PinkTrailCube");
+		{
+			trailCube = (GameObject)Resources.Load("TrailCubes/PinkTrailCube");
+			cornerTrailCube = (GameObject)Resources.Load("TrailCubes/PinkTrailCornerPiece");
+		}
 
 	}
 	
@@ -90,11 +115,10 @@ public class MoveBlockScript : MonoBehaviour {
 				if (spawnCube)
 				{
 					spawnCube = false;
-					var x = (GameObject)GameObject.Instantiate(trailCube, oldPosition, transform.rotation);
+					var x = CalculateTrailCubeToSpawn();
+					//var x = (GameObject)GameObject.Instantiate(cornerTrailCube, oldPosition, transform.rotation);
 					x.name = transform.name + "TrailBox";
 					x.transform.parent = transform.parent.transform;
-					x.GetComponent<TrailCubeScript>().LookAtParent(this.transform.gameObject);
-					x.AddComponent<BasicBlockActivatableScript>();
 					x.transform.tag = "Activatable";
 
 					createdTrailCubes.Add(x);
@@ -110,6 +134,43 @@ public class MoveBlockScript : MonoBehaviour {
 				isMoving = true;
 			}
 		}
+	}
+
+	private GameObject CalculateTrailCubeToSpawn()
+	{
+		GameObject cubeToSpawn;
+		bool isCornerPiece = false;
+
+		if (createdTrailCubes.Count == 0) // There are no other cubes, So it has to be a straight line
+		{
+			cubeToSpawn = (GameObject)GameObject.Instantiate(trailCube, oldPosition, transform.rotation);
+			cubeToSpawn.GetComponent<TrailCubeScript>().LookAtParent(this.transform.gameObject);
+		}
+		else
+		{
+			var lastlyCreatedCube = createdTrailCubes[createdTrailCubes.Count - 1];
+
+			if (lastlyCreatedCube.transform.position.x == transform.position.x ||
+				lastlyCreatedCube.transform.position.z == transform.position.z)
+			{
+				cubeToSpawn = (GameObject)GameObject.Instantiate(trailCube, oldPosition, transform.rotation);
+				cubeToSpawn.GetComponent<TrailCubeScript>().LookAtParent(this.transform.gameObject);
+			}
+			else
+			{
+				cubeToSpawn = (GameObject)GameObject.Instantiate(cornerTrailCube, oldPosition, transform.rotation);
+				cubeToSpawn.GetComponent<CornerTrailCubeScript>().SetTrailCubeRotation(this.transform.gameObject, createdTrailCubes.Last(), movementCheckLength);
+				isCornerPiece = true;
+			}
+
+		}
+
+		//if(isCornerPiece)
+		//{
+		//	cubeToSpawn.transform.position += new Vector3(-.18F, -.166F, -.17F);
+		//}
+
+		return cubeToSpawn;
 	}
 
 	void Activate(GameObject player)
@@ -147,7 +208,7 @@ public class MoveBlockScript : MonoBehaviour {
 			spawnCube = true;
 			vectorToMoveTowards = transform.position + movementVector;
 		}
-		else if (rayCastHit.transform.gameObject == createdTrailCubes[createdTrailCubes.Count - 1].gameObject)
+		else if (rayCastHit.transform.gameObject == createdTrailCubes.Last().gameObject)
 		{
 			createdTrailCubes.RemoveAt(createdTrailCubes.Count - 1);
 			Destroy(rayCastHit.transform.gameObject);

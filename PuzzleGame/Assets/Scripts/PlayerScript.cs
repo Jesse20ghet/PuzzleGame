@@ -31,6 +31,17 @@ public class PlayerScript : MonoBehaviour {
 				hitObject.gameObject.SendMessage("Activate", gameObject);
 			}
 		}
+		if(Input.GetKeyUp(KeyCode.E))
+		{
+			if (hitObject == null)
+				return;
+
+			if(hitObject.transform.tag == "Activatable")
+			{
+				hitObject.gameObject.SendMessage("ActivateTwo", gameObject);
+			}
+
+		}
 	}
 
 	private Transform CastMainCameraRay()

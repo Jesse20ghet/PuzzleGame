@@ -100,6 +100,8 @@
     <Compile Include="Assets\Scripts\BlockScripts\PlaneScript.cs" />
     <Compile Include="Assets\Scripts\BlockScripts\TrailCubeScript.cs" />
     <Compile Include="Assets\Scripts\ClockScripts\ClockTickScript.cs" />
+    <Compile Include="Assets\Scripts\CornerTrailCubeActivatableScript.cs" />
+    <Compile Include="Assets\Scripts\CornerTrailCubeScript.cs" />
     <Compile Include="Assets\Scripts\DebugScript.cs" />
     <Compile Include="Assets\Scripts\GameControllerScript.cs" />
     <Compile Include="Assets\Scripts\LightFlashScript.cs" />
@@ -135,6 +137,7 @@
     <Compile Include="Assets\Scripts\RoomUIUpdateScript.cs" />
     <Compile Include="Assets\Scripts\RotateScript.cs" />
     <Compile Include="Assets\Scripts\ShakeScript.cs" />
+    <Compile Include="Assets\Scripts\StraightTrailCubeScript.cs" />
     <Compile Include="Assets\Scripts\SunScript.cs" />
     <Compile Include="Assets\Scripts\TrailCubeActivatableScript.cs" />
     <Compile Include="Assets\Scripts\TrashCanTiltOverScript.cs" />
