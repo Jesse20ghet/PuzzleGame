@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;
 
 public class PlayerScript : MonoBehaviour {
 
@@ -38,7 +39,14 @@ public class PlayerScript : MonoBehaviour {
 
 			if(hitObject.transform.tag == "Activatable")
 			{
-				hitObject.gameObject.SendMessage("ActivateTwo", gameObject);
+				try
+				{
+					hitObject.gameObject.SendMessage("ActivateTwo", gameObject);
+				}
+				catch(Exception ex)
+				{
+					
+				}
 			}
 
 		}

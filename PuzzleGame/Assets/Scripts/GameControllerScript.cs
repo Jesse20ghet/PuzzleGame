@@ -16,7 +16,7 @@ public class GameControllerScript : MonoBehaviour {
 			OnLevelWasLoaded();
 			player.name = "Player";
 
-			firstLoad = false;
+			//firstLoad = false;
 		}
 	}
 	

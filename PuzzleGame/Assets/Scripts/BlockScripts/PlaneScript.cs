@@ -15,7 +15,7 @@ public class PlaneScript : MonoBehaviour
 
 		if (collision.gameObject == cube)
 		{
-			roomController.GetComponent<BlockRoomControllerScriptBase>().ToggleCube(cubeType);
+			roomController.GetComponent<PuzzleControllerScript>().ToggleCube(cubeType);
 			UpdateWalls(false);
 		}
 	}
@@ -26,7 +26,7 @@ public class PlaneScript : MonoBehaviour
 
 		if (collision.gameObject == cube)
 		{
-			roomController.GetComponent<BlockRoomControllerScriptBase>().ToggleCube(cubeType);
+			roomController.GetComponent<PuzzleControllerScript>().ToggleCube(cubeType);
 			UpdateWalls(true);
 		}
 	}
@@ -35,7 +35,10 @@ public class PlaneScript : MonoBehaviour
 	{
 		foreach(var wall in walls)
 		{
-			wall.SetActive(status);
+			var animators = wall.GetComponentsInChildren<Animator>();
+
+			foreach (var animator in animators)
+				animator.SetBool("Enabled", status);
 		}
 	}
 }

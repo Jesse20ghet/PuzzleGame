@@ -10,6 +10,8 @@ public class MoveBlockScript : MonoBehaviour {
 	public GameObject controller;
 	public static int CurrentCubes = 1;
 
+	private float inLineCheckDistance = .1F;
+
 	float movementLength;
 	float movementCheckLength;
 	float movementSpeed = 4f;
@@ -27,6 +29,8 @@ public class MoveBlockScript : MonoBehaviour {
 	bool lastCube = false;
 	GameObject resetTrailCube;
 
+	private Animator animatorRef;
+
 	// Use this for initialization
 	void Start () 
 	{
@@ -35,6 +39,8 @@ public class MoveBlockScript : MonoBehaviour {
 		movementCheckLength = movementLength * 1.4F;
 		isMoving = false;
 		startingPosition = transform.position;
+
+		animatorRef = GetComponent<Animator>();
 
 		if (transform.name.Contains("Red"))
 		{
@@ -91,6 +97,7 @@ public class MoveBlockScript : MonoBehaviour {
 				{
 					resettingToTrailCube = false;
 					resetTrailCube = null;
+					movementSpeed = 4;
 					return;
 				}
 
@@ -139,7 +146,6 @@ public class MoveBlockScript : MonoBehaviour {
 	private GameObject CalculateTrailCubeToSpawn()
 	{
 		GameObject cubeToSpawn;
-		bool isCornerPiece = false;
 
 		if (createdTrailCubes.Count == 0) // There are no other cubes, So it has to be a straight line
 		{
@@ -150,8 +156,9 @@ public class MoveBlockScript : MonoBehaviour {
 		{
 			var lastlyCreatedCube = createdTrailCubes[createdTrailCubes.Count - 1];
 
-			if (lastlyCreatedCube.transform.position.x == transform.position.x ||
-				lastlyCreatedCube.transform.position.z == transform.position.z)
+			// Checking to see if the cube is a straight line(Or as straight as Unity remembers) from its last created trail cube
+			if (lastlyCreatedCube.transform.localPosition.x == transform.localPosition.x||
+				lastlyCreatedCube.transform.localPosition.z == transform.localPosition.z)
 			{
 				cubeToSpawn = (GameObject)GameObject.Instantiate(trailCube, oldPosition, transform.rotation);
 				cubeToSpawn.GetComponent<TrailCubeScript>().LookAtParent(this.transform.gameObject);
@@ -160,15 +167,9 @@ public class MoveBlockScript : MonoBehaviour {
 			{
 				cubeToSpawn = (GameObject)GameObject.Instantiate(cornerTrailCube, oldPosition, transform.rotation);
 				cubeToSpawn.GetComponent<CornerTrailCubeScript>().SetTrailCubeRotation(this.transform.gameObject, createdTrailCubes.Last(), movementCheckLength);
-				isCornerPiece = true;
 			}
 
 		}
-
-		//if(isCornerPiece)
-		//{
-		//	cubeToSpawn.transform.position += new Vector3(-.18F, -.166F, -.17F);
-		//}
 
 		return cubeToSpawn;
 	}
@@ -208,7 +209,7 @@ public class MoveBlockScript : MonoBehaviour {
 			spawnCube = true;
 			vectorToMoveTowards = transform.position + movementVector;
 		}
-		else if (rayCastHit.transform.gameObject == createdTrailCubes.Last().gameObject)
+		else if (createdTrailCubes.Count > 0 && rayCastHit.transform.gameObject == createdTrailCubes.Last().gameObject)
 		{
 			createdTrailCubes.RemoveAt(createdTrailCubes.Count - 1);
 			Destroy(rayCastHit.transform.gameObject);
@@ -218,6 +219,10 @@ public class MoveBlockScript : MonoBehaviour {
 
 			oldPosition = transform.position;
 			vectorToMoveTowards = transform.position + movementVector;
+		}
+		else
+		{
+			animatorRef.SetTrigger("BadDirection");
 		}
 
 	}
@@ -235,6 +240,7 @@ public class MoveBlockScript : MonoBehaviour {
 		vectorToMoveTowards = createdTrailCubes[createdTrailCubes.Count - 1].transform.position;
 		Destroy(createdTrailCubes[createdTrailCubes.Count - 1]);
 		createdTrailCubes.RemoveAt(createdTrailCubes.Count - 1);
+		movementSpeed = 8;
 	}
 
 	void Respawn()
